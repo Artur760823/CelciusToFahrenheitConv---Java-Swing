@@ -11,12 +11,14 @@ import java.util.Scanner;
 public class JMENU_TEST extends JFrame implements ActionListener {
     JLabel label;
     JButton btnSearch;
+    JPopupMenu popup;
     JMenuBar menuBar;
     JMenu menuFile, menuTools, menuHelp, menuOptions;
-    JMenuItem mOpen, mSave, mExit, mTool1, mTool2, mTool3, mOption1, mAbout;
+    JMenuItem mOpen, mSave, mExit, mTool1, mTool2, mTool3, mOption1, mpCopy, mpPaste, mpAdd, mAbout;
     JCheckBoxMenuItem chOption2;
     JTextField txtSearch;
     JTextArea notebook;
+    String copyText;
 
 
     public JMENU_TEST(){
@@ -89,7 +91,19 @@ public class JMENU_TEST extends JFrame implements ActionListener {
         add(btnSearch);
         btnSearch.addActionListener(this);
 
+        popup = new JPopupMenu();
+        mpCopy = new JMenuItem("Copy");
+        mpCopy.addActionListener(this);
+        mpPaste = new JMenuItem("Paste");
+        mpPaste.addActionListener(this);
+        mpAdd = new JMenuItem("Add");
+        mpAdd.addActionListener(this);
 
+        popup.add(mpCopy);
+        popup.add(mpPaste);
+        popup.add(mpAdd);
+
+        notebook.setComponentPopupMenu(popup);
 
     }
 
@@ -160,6 +174,15 @@ public class JMENU_TEST extends JFrame implements ActionListener {
             }
             JOptionPane.showMessageDialog(null, searchText + " wystąpiło"
             + i + " razy: " + txtFound);
+        }
+        else if (source == mpCopy){
+            copyText = notebook.getSelectedText();
+        }
+        else if (source == mpPaste){
+            notebook.insert(copyText, notebook.getCaretPosition());
+        }
+        else if(source == mpAdd){
+            notebook.append("\n" + copyText);
         }
         if(source == chOption2){
             if(chOption2.isSelected()){
